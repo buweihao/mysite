@@ -17,7 +17,7 @@ export const fetchUser = async () => {
       return userInfo;
     }
   } catch (error) {
-    // console.log("Error fetching user details:", error);
+    console.log("Error fetching user details:", error);
     return null;
   }
 };

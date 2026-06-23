@@ -4,6 +4,7 @@ import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import AutoImport from "astro-auto-import";
+import gtm from "astro-gtm-lite";
 import { defineConfig } from "astro/config";
 import sharp from "sharp";
 import config from "./src/config/config.json";
@@ -34,6 +35,10 @@ export default defineConfig({
       ],
     }),
     mdx(),
+    gtm({
+      enable: config.google_tag_manager.enable,
+      id: config.google_tag_manager.gtm_id,
+    }),
   ],
   markdown: {
     shikiConfig: {
