@@ -1,13 +1,19 @@
 ---
 import Base from "@/layouts/Base.astro";
+import { getSanityWorks } from "@/lib/sanity";
 import { getCollection } from "astro:content";
 
 const selectedCategory = Astro.url.searchParams.get("category");
-const allWorks = (await getCollection("works")).sort(
-  (a, b) => b.data.year - a.data.year,
+const sanityWorks = await getSanityWorks();
+const localWorks = (await getCollection("works")).map((work) => ({
+  slug: work.id,
+  ...work.data,
+}));
+const allWorks = (sanityWorks.length > 0 ? sanityWorks : localWorks).sort(
+  (a, b) => b.year - a.year,
 );
 const works = selectedCategory
-  ? allWorks.filter((work) => work.data.category === selectedCategory)
+  ? allWorks.filter((work) => work.category === selectedCategory)
   : allWorks;
 const categories = ["全部", "视觉", "软件", "硬件"];
 ---
@@ -49,23 +55,23 @@ const categories = ["全部", "视觉", "软件", "硬件"];
         {
           works.map((work) => (
             <a
-              href={`/works/${work.id}`}
+              href={`/works/${work.slug}`}
               class="group overflow-hidden rounded-md border border-border bg-white transition hover:-translate-y-1 hover:shadow-lg dark:border-darkmode-border dark:bg-darkmode-light"
             >
               <img
-                src={work.data.cover}
-                alt={work.data.title}
+                src={work.cover}
+                alt={work.title}
                 class="h-56 w-full object-cover"
                 loading="lazy"
               />
               <div class="p-6">
                 <div class="mb-4 flex items-center justify-between text-sm text-text-light dark:text-darkmode-text-light">
-                  <span>{work.data.category}</span>
-                  <span>{work.data.year}</span>
+                  <span>{work.category}</span>
+                  <span>{work.year}</span>
                 </div>
-                <h2 class="h4 mb-3 group-hover:text-primary">{work.data.title}</h2>
+                <h2 class="h4 mb-3 group-hover:text-primary">{work.title}</h2>
                 <p class="leading-7 text-text-light dark:text-darkmode-text-light">
-                  {work.data.description}
+                  {work.description}
                 </p>
               </div>
             </a>
