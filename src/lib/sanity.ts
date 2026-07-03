@@ -1,5 +1,5 @@
 import { createClient } from "@sanity/client";
-import imageUrlBuilder from "@sanity/image-url";
+import { createImageUrlBuilder } from "@sanity/image-url";
 
 const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = import.meta.env.PUBLIC_SANITY_DATASET || "production";
@@ -16,7 +16,7 @@ export const sanityClient = isSanityConfigured
     })
   : null;
 
-const builder = sanityClient ? imageUrlBuilder(sanityClient) : null;
+const builder = sanityClient ? createImageUrlBuilder(sanityClient) : null;
 
 export interface PortfolioWork {
   slug: string;
@@ -76,8 +76,8 @@ export async function getSanityWorks(): Promise<PortfolioWork[]> {
       year,
       "cover": coalesce(cover.asset->url, "/images/image-placeholder.png"),
       featured,
-      tags,
-      body
+      "tags": coalesce(tags, []),
+      "body": coalesce(body, [])
     }
   `);
 }
@@ -97,8 +97,8 @@ export async function getSanityWork(slug: string): Promise<PortfolioWork | null>
         year,
         "cover": coalesce(cover.asset->url, "/images/image-placeholder.png"),
         featured,
-        tags,
-        body
+        "tags": coalesce(tags, []),
+        "body": coalesce(body, [])
       }
     `,
     { slug },
