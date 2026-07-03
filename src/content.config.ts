@@ -1,12 +1,11 @@
 import { glob } from "astro/loaders";
 import { defineCollection } from "astro:content";
+import { z } from "astro/zod";
 import { aboutCollection } from "./types/pages/aboutCollection";
 import { contactCollection } from "./types/pages/contactCollection";
 import { ctaSectionCollection } from "./types/sections/ctaSectionCollection";
 import { paymentCollection } from "./types/sections/paymentCollection";
-import { z } from "astro/zod";
 
-// Pages collection schema
 const pagesCollection = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/pages" }),
   schema: z.object({
@@ -18,14 +17,24 @@ const pagesCollection = defineCollection({
   }),
 });
 
-// Export collections
+const worksCollection = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/works" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    category: z.enum(["视觉", "软件", "硬件"]),
+    year: z.number(),
+    cover: z.string(),
+    featured: z.boolean().optional(),
+    tags: z.array(z.string()).default([]),
+  }),
+});
+
 export const collections = {
-  // Pages
   pages: pagesCollection,
+  works: worksCollection,
   about: aboutCollection,
   contact: contactCollection,
-
-  // sections
   ctaSection: ctaSectionCollection,
   paymentSection: paymentCollection,
 };

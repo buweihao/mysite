@@ -1,0 +1,66 @@
+---
+import Base from "@/layouts/Base.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const works = await getCollection("works");
+  return works.map((work) => ({
+    params: { slug: work.id },
+    props: { work },
+  }));
+}
+
+const { work } = Astro.props;
+const { Content } = await render(work);
+---
+
+<Base title={work.data.title} description={work.data.description} image={work.data.cover}>
+  <article class="section-sm">
+    <div class="container">
+      <a class="mb-8 inline-block text-primary" href="/works">返回作品</a>
+      <div class="grid gap-10 lg:grid-cols-[1fr_420px] lg:items-start">
+        <div>
+          <p class="mb-4 text-sm font-medium uppercase text-primary">{work.data.category}</p>
+          <h1 class="mb-6">{work.data.title}</h1>
+          <p class="text-lg leading-8 text-text-light dark:text-darkmode-text-light">
+            {work.data.description}
+          </p>
+        </div>
+        <div class="rounded-md border border-border p-6 dark:border-darkmode-border">
+          <dl class="space-y-4">
+            <div class="flex justify-between gap-6">
+              <dt class="text-text-light dark:text-darkmode-text-light">年份</dt>
+              <dd>{work.data.year}</dd>
+            </div>
+            <div class="flex justify-between gap-6">
+              <dt class="text-text-light dark:text-darkmode-text-light">分类</dt>
+              <dd>{work.data.category}</dd>
+            </div>
+            <div>
+              <dt class="mb-3 text-text-light dark:text-darkmode-text-light">标签</dt>
+              <dd class="flex flex-wrap gap-2">
+                {
+                  work.data.tags.map((tag) => (
+                    <span class="rounded-md bg-light px-3 py-1 text-sm dark:bg-darkmode-body">
+                      {tag}
+                    </span>
+                  ))
+                }
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <img
+        src={work.data.cover}
+        alt={work.data.title}
+        class="mt-12 aspect-[16/9] w-full rounded-md object-cover"
+      />
+
+      <div class="prose mt-12 max-w-3xl dark:prose-invert">
+        <Content />
+      </div>
+    </div>
+  </article>
+</Base>

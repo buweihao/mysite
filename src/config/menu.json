@@ -1,59 +1,35 @@
 {
   "main": [
     {
-      "name": "Home",
+      "name": "首页",
       "url": "/"
     },
     {
-      "name": "Products",
-      "url": "/products"
+      "name": "作品",
+      "url": "/works"
     },
     {
-      "name": "Pages",
-      "url": "",
-      "hasChildren": true,
-      "children": [
-        {
-          "name": "About",
-          "url": "/about"
-        },
-        {
-          "name": "Contact",
-          "url": "/contact"
-        },
-        {
-          "name": "404 Page",
-          "url": "/404"
-        }
-      ]
+      "name": "关于",
+      "url": "/about"
     },
     {
-      "name": "Contact",
+      "name": "联系",
       "url": "/contact"
     }
   ],
   "footer": [
     {
-      "name": "About",
+      "name": "关于",
       "url": "/about"
     },
     {
-      "name": "Products",
-      "url": "/products"
+      "name": "作品",
+      "url": "/works"
     },
     {
-      "name": "Contact",
+      "name": "联系",
       "url": "/contact"
     }
   ],
-  "footerCopyright": [
-    {
-      "name": "Privacy & Policy",
-      "url": "/privacy-policy"
-    },
-    {
-      "name": "Terms of Service",
-      "url": "/terms-services"
-    }
-  ]
+  "footerCopyright": []
 }

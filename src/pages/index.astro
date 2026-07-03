@@ -1,58 +1,64 @@
 ---
-import FeaturedProducts from "@/components/FeaturedProducts.astro";
-import config from "@/config/config.json";
-import CollectionsSlider from "@/functional-components/CollectionsSlider";
 import Base from "@/layouts/Base.astro";
-import { getCollectionProducts, getCollections } from "@/lib/shopify";
-import CallToAction from "@/partials/CallToAction.astro";
-import HeroSlider from "src/layouts/functional-components/HeroSlider";
+import { getCollection } from "astro:content";
 
-const { collections } = config.shopify;
-
-// Fetch slider images for the HeroSlider
-const sliderImages = await getCollectionProducts({
-  collection: collections.hero_slider,
-});
-const heroProducts = sliderImages.products;
-
-const collectionProducts = await getCollections();
-
-// Fetch featured products
-const { products: featuredProducts } = await getCollectionProducts({
-  collection: collections.featured_products,
-  reverse: false,
-});
+const works = (await getCollection("works")).filter((work) => work.data.featured);
 ---
 
-<Base>
-  <section>
+<Base title="buweihao" description="buweihao 的个人作品集，展示视觉、软件和硬件方向的项目。">
+  <section class="section-sm overflow-hidden">
     <div class="container">
-      <div class="bg-gradient py-10 rounded-md">
-        <HeroSlider products={heroProducts} client:load />
+      <div class="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+        <div>
+          <p class="mb-5 text-sm font-medium uppercase text-primary">Personal Portfolio</p>
+          <h1 class="mb-6">buweihao 的视觉、软件与硬件作品集</h1>
+          <p class="mb-8 max-w-2xl text-lg leading-8 text-text-light dark:text-darkmode-text-light">
+            我关注从概念到落地的完整过程：视觉表达、软件体验和硬件交互如何共同服务一个清晰的想法。
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <a class="btn btn-primary" href="/works">查看作品</a>
+            <a class="btn btn-outline-primary" href="/contact">联系合作</a>
+          </div>
+        </div>
+        <div>
+          <img
+            src="/images/banner.png"
+            alt="buweihao portfolio"
+            class="aspect-[4/3] w-full rounded-md object-cover shadow-xl"
+          />
+        </div>
       </div>
     </div>
   </section>
 
-  {/* category section */}
-  <section class="section">
+  <section class="pb-20">
     <div class="container">
-      <div class="text-center mb-6 md:mb-14">
-        <h2>Collections</h2>
+      <div class="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+        <div>
+          <p class="mb-3 text-sm font-medium uppercase text-primary">Selected Work</p>
+          <h2>精选作品</h2>
+        </div>
+        <a class="text-primary" href="/works">全部作品</a>
       </div>
-      <CollectionsSlider client:load collections={collectionProducts} />
+      <div class="grid gap-6 md:grid-cols-3">
+        {
+          works.map((work) => (
+            <a
+              href={`/works/${work.id}`}
+              class="group overflow-hidden rounded-md border border-border bg-white dark:border-darkmode-border dark:bg-darkmode-light"
+            >
+              <img src={work.data.cover} alt={work.data.title} class="h-48 w-full object-cover" />
+              <div class="p-6">
+                <p class="mb-3 text-sm text-primary">{work.data.category}</p>
+                <h3 class="h4 mb-3 group-hover:text-primary">{work.data.title}</h3>
+                <p class="leading-7 text-text-light dark:text-darkmode-text-light">
+                  {work.data.description}
+                </p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
     </div>
   </section>
-
-  {/* Featured Products section */}
-  <section>
-    <div class="container">
-      <div class="text-center mb-6 md:mb-14">
-        <h2 class="mb-2">Featured Products</h2>
-        <p class="md:h5">Explore Today's Featured Picks!</p>
-      </div>
-      <FeaturedProducts products={featuredProducts} />
-    </div>
-  </section>
-
-  <CallToAction />
 </Base>

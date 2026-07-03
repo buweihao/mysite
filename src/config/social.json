@@ -1,24 +1,14 @@
 {
   "main": [
     {
-      "name": "facebook",
-      "icon": "FaFacebook",
-      "link": "https://www.facebook.com/"
-    },
-    {
-      "name": "x",
-      "icon": "FaXTwitter",
-      "link": "https://x.com/"
+      "name": "baidu",
+      "icon": "FaLink",
+      "link": "https://baidu.com"
     },
     {
       "name": "github",
       "icon": "FaGithub",
-      "link": "https://www.github.com/"
-    },
-    {
-      "name": "linkedin",
-      "icon": "FaLinkedin",
-      "link": "https://www.linkedin.com/"
+      "link": "https://github.com/buweihao"
     }
   ]
 }

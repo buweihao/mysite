@@ -1,39 +1,22 @@
 import mdx from "@astrojs/mdx";
-import netlify from "@astrojs/netlify";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
-import AutoImport from "astro-auto-import";
 import gtm from "astro-gtm-lite";
 import { defineConfig } from "astro/config";
-import sharp from "sharp";
-import config from "./src/config/config.json";
+import { readFileSync } from "node:fs";
 
-// https://astro.build/config
+const config = JSON.parse(readFileSync(new URL("./src/config/config.json", import.meta.url), "utf-8"));
+
 export default defineConfig({
   site: config.site.base_url ? config.site.base_url : "http://examplesite.com",
   base: config.site.base_path ? config.site.base_path : "/",
   trailingSlash: config.site.trailing_slash ? "always" : "never",
-  image: { service: sharp() },
-  output: "server",
-  adapter: netlify({
-    edgeMiddleware: true,
-  }),
+  output: "static",
   vite: { plugins: [tailwindcss()] },
   integrations: [
     react(),
     sitemap(),
-    AutoImport({
-      imports: [
-        "@/shortcodes/Button",
-        "@/shortcodes/Accordion",
-        "@/shortcodes/Notice",
-        "@/shortcodes/Video",
-        "@/shortcodes/Youtube",
-        "@/shortcodes/Tabs",
-        "@/shortcodes/Tab",
-      ],
-    }),
     mdx(),
     gtm({
       enable: config.google_tag_manager.enable,

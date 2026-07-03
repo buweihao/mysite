@@ -1,10 +1,10 @@
 {
-  "name": "storeplate",
+  "name": "buweihao-portfolio",
   "version": "3.0.0",
-  "description": "Astro and Shopify Storefront API boilerplate",
-  "author": "zeon.studio",
+  "description": "Personal portfolio website for buweihao",
+  "author": "buweihao",
   "license": "MIT",
-  "packageManager": "pnpm@11.8.0",
+  "packageManager": "npm@11.6.2",
   "type": "module",
   "scripts": {
     "dev": "concurrently \"node scripts/themeGenerator.js --watch\" \"astro dev\"",
@@ -24,7 +24,6 @@
     "@justinribeiro/lite-youtube": "^1.9.0",
     "@nanostores/react": "^1.1.0",
     "astro": "^7.0.0",
-    "astro-auto-import": "^0.5.1",
     "astro-font": "^1.1.0",
     "astro-gtm-lite": "^1.0.1",
     "date-fns": "^4.4.0",
