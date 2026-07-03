@@ -1,8 +1,9 @@
 ---
 import Base from "@/layouts/Base.astro";
-import { getSanityWorks } from "@/lib/sanity";
+import { getSanitySettings, getSanityWorks } from "@/lib/sanity";
 import { getCollection } from "astro:content";
 
+const settings = await getSanitySettings();
 const sanityWorks = await getSanityWorks();
 const localWorks = (await getCollection("works")).map((work) => ({
   slug: work.id,
@@ -11,17 +12,26 @@ const localWorks = (await getCollection("works")).map((work) => ({
 const works = (sanityWorks.length > 0 ? sanityWorks : localWorks).filter(
   (work) => work.featured,
 );
+
+const siteTitle = settings?.title || "buweihao";
+const siteDescription =
+  settings?.description || "buweihao 的个人作品集，展示视觉、软件和硬件方向的项目。";
+const heroTitle =
+  settings?.heroTitle || "buweihao 的视觉、软件与硬件作品集";
+const heroDescription =
+  settings?.heroDescription ||
+  "我关注从概念到落地的完整过程：视觉表达、软件体验和硬件交互如何共同服务一个清晰的想法。";
 ---
 
-<Base title="buweihao" description="buweihao 的个人作品集，展示视觉、软件和硬件方向的项目。">
+<Base title={siteTitle} description={siteDescription}>
   <section class="section-sm overflow-hidden">
     <div class="container">
       <div class="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
         <div>
           <p class="mb-5 text-sm font-medium uppercase text-primary">Personal Portfolio</p>
-          <h1 class="mb-6">buweihao 的视觉、软件与硬件作品集</h1>
+          <h1 class="mb-6">{heroTitle}</h1>
           <p class="mb-8 max-w-2xl text-lg leading-8 text-text-light dark:text-darkmode-text-light">
-            我关注从概念到落地的完整过程：视觉表达、软件体验和硬件交互如何共同服务一个清晰的想法。
+            {heroDescription}
           </p>
           <div class="flex flex-wrap gap-4">
             <a class="btn btn-primary" href="/works">查看作品</a>

@@ -1,5 +1,14 @@
 ---
 import Base from "@/layouts/Base.astro";
+import { getSanitySettings } from "@/lib/sanity";
+
+const settings = await getSanitySettings();
+const email = settings?.email || "buweihao@qq.com";
+const socialUrl = settings?.socialUrl || "https://baidu.com";
+const socialLabel = socialUrl.replace(/^https?:\/\//, "").replace(/\/$/, "");
+const contactIntro =
+  settings?.contactIntro ||
+  "如果你想交流项目、作品或合作，可以通过邮箱与我联系。";
 ---
 
 <Base title="联系" description="通过邮箱或社交链接联系 buweihao。">
@@ -9,7 +18,7 @@ import Base from "@/layouts/Base.astro";
         <p class="mb-4 text-sm font-medium uppercase text-primary">Contact</p>
         <h1 class="mb-6">联系</h1>
         <p class="text-lg leading-8 text-text-light dark:text-darkmode-text-light">
-          如果你想交流项目、作品或合作，可以通过邮箱与我联系。
+          {contactIntro}
         </p>
       </div>
     </div>
@@ -20,19 +29,19 @@ import Base from "@/layouts/Base.astro";
       <div class="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
         <a
           class="rounded-md border border-border p-8 transition hover:-translate-y-1 hover:shadow-lg dark:border-darkmode-border"
-          href="mailto:buweihao@qq.com"
+          href={`mailto:${email}`}
         >
           <p class="mb-3 text-sm text-primary">Email</p>
-          <h2 class="h4">buweihao@qq.com</h2>
+          <h2 class="h4">{email}</h2>
         </a>
         <a
           class="rounded-md border border-border p-8 transition hover:-translate-y-1 hover:shadow-lg dark:border-darkmode-border"
-          href="https://baidu.com"
+          href={socialUrl}
           target="_blank"
           rel="noopener noreferrer"
         >
           <p class="mb-3 text-sm text-primary">Social</p>
-          <h2 class="h4">baidu.com</h2>
+          <h2 class="h4">{socialLabel}</h2>
         </a>
       </div>
     </div>

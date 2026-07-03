@@ -10,8 +10,30 @@ export default defineConfig({
   title: "buweihao Portfolio",
   projectId,
   dataset,
-  plugins: [structureTool()],
+  plugins: [
+    structureTool({
+      structure: (S) =>
+        S.list()
+          .title("Content")
+          .items([
+            S.listItem()
+              .title("网站设置")
+              .schemaType("siteSettings")
+              .child(
+                S.document()
+                  .schemaType("siteSettings")
+                  .documentId("siteSettings")
+                  .title("网站设置"),
+              ),
+            S.documentTypeListItem("work").title("作品"),
+          ]),
+    }),
+  ],
   schema: {
     types: schemaTypes,
+  },
+  document: {
+    newDocumentOptions: (prev) =>
+      prev.filter((templateItem) => templateItem.templateId !== "siteSettings"),
   },
 });

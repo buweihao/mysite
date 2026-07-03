@@ -30,8 +30,36 @@ export interface PortfolioWork {
   body?: unknown[];
 }
 
+export interface SiteSettings {
+  title?: string;
+  description?: string;
+  heroTitle?: string;
+  heroDescription?: string;
+  contactIntro?: string;
+  email?: string;
+  socialUrl?: string;
+}
+
 export function urlFor(source: unknown) {
   return builder && source ? builder.image(source) : null;
+}
+
+export async function getSanitySettings(): Promise<SiteSettings | null> {
+  if (!sanityClient) {
+    return null;
+  }
+
+  return sanityClient.fetch<SiteSettings | null>(`
+    *[_type == "siteSettings" && _id == "siteSettings"][0] {
+      title,
+      description,
+      heroTitle,
+      heroDescription,
+      contactIntro,
+      email,
+      socialUrl
+    }
+  `);
 }
 
 export async function getSanityWorks(): Promise<PortfolioWork[]> {
