@@ -4,7 +4,6 @@
   "description": "Personal portfolio website for buweihao",
   "author": "buweihao",
   "license": "MIT",
-  "packageManager": "npm@11.6.2",
   "type": "module",
   "scripts": {
     "dev": "concurrently \"node scripts/themeGenerator.js --watch\" \"astro dev\"",
